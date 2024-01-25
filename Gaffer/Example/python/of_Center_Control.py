@@ -1,0 +1,57 @@
+import Gaffer
+import imath
+
+Gaffer.Metadata.registerValue( parent, "serialiser:milestoneVersion", 1, persistent=False )
+Gaffer.Metadata.registerValue( parent, "serialiser:majorVersion", 3, persistent=False )
+Gaffer.Metadata.registerValue( parent, "serialiser:minorVersion", 3, persistent=False )
+Gaffer.Metadata.registerValue( parent, "serialiser:patchVersion", 0, persistent=False )
+
+__children = {}
+
+__children["of_Center_Control"] = Gaffer.Node( "of_Center_Control" )
+parent.addChild( __children["of_Center_Control"] )
+__children["of_Center_Control"].addChild( Gaffer.V2fPlug( "__uiPosition", defaultValue = imath.V2f( 0, 0 ), flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ) )
+Gaffer.Metadata.registerValue( __children["of_Center_Control"], 'description', '修改节点、节点连接线、节点注释的颜色工具' )
+Gaffer.Metadata.registerValue( __children["of_Center_Control"], 'nodeGadget:color', imath.Color3f( 0.379999995, 0.200000003, 0.270000011 ) )
+Gaffer.Metadata.registerValue( __children["of_Center_Control"]["user"]["Preview_Target"], 'description', '显示模式' )
+Gaffer.Metadata.registerValue( __children["of_Center_Control"]["user"]["Preview_Target"], 'plugValueWidget:type', 'GafferUI.PresetsPlugValueWidget' )
+Gaffer.Metadata.registerValue( __children["of_Center_Control"]["user"]["Preview_Target"], 'preset:Proxy', 'proxy' )
+Gaffer.Metadata.registerValue( __children["of_Center_Control"]["user"]["Preview_Target"], 'preset:Render', 'render' )
+Gaffer.Metadata.registerValue( __children["of_Center_Control"]["user"]["Switch"], 'description', '点击切换' )
+Gaffer.Metadata.registerValue( __children["of_Center_Control"]["user"]["Switch"], 'plugValueWidget:type', 'GafferUI.ButtonPlugValueWidget' )
+Gaffer.Metadata.registerValue( __children["of_Center_Control"]["user"]["Switch"], 'buttonPlugValueWidget:clicked', "\nroot = plug.node().scriptNode()\nPreviewTarget = root['of_Center_Control']['user']['Preview_Target'].getValue()\nroot['CommonEdits']['PurposeVisibility']['previewTarget'].setValue(PreviewTarget)\n    " )
+Gaffer.Metadata.registerValue( __children["of_Center_Control"]["user"]["Switch"], 'layout:accessory', True )
+Gaffer.Metadata.registerValue( __children["of_Center_Control"]["user"]["connectionsColor"], 'description', '连接线颜色' )
+Gaffer.Metadata.registerValue( __children["of_Center_Control"]["user"]["Set_connections_color"], 'plugValueWidget:type', 'GafferUI.ButtonPlugValueWidget' )
+Gaffer.Metadata.registerValue( __children["of_Center_Control"]["user"]["Set_connections_color"], 'divider', False )
+Gaffer.Metadata.registerValue( __children["of_Center_Control"]["user"]["Set_connections_color"], 'layout:accessory', True )
+Gaffer.Metadata.registerValue( __children["of_Center_Control"]["user"]["Set_connections_color"], 'description', '设置连接线颜色' )
+Gaffer.Metadata.registerValue( __children["of_Center_Control"]["user"]["Set_connections_color"], 'buttonPlugValueWidget:clicked', '\nimport imath\nroot = plug.node().scriptNode()\ncolorValue = root[\'of_Center_Control\'][\'user\'][\'connectionsColor\'].getValue()\nfor node in root.selection():\n    nodeName = node.getChild(\'in\')\n    Gaffer.Metadata.registerValue( nodeName, "connectionGadget:color", imath.Color3f(colorValue[0], colorValue[1], colorValue[2]))\n    ' )
+Gaffer.Metadata.registerValue( __children["of_Center_Control"]["user"]["nodeColor"], 'description', '节点颜色' )
+Gaffer.Metadata.registerValue( __children["of_Center_Control"]["user"]["Set_node_color"], 'plugValueWidget:type', 'GafferUI.ButtonPlugValueWidget' )
+Gaffer.Metadata.registerValue( __children["of_Center_Control"]["user"]["Set_node_color"], 'layout:accessory', True )
+Gaffer.Metadata.registerValue( __children["of_Center_Control"]["user"]["Set_node_color"], 'description', '设置节点颜色' )
+Gaffer.Metadata.registerValue( __children["of_Center_Control"]["user"]["Set_node_color"], 'buttonPlugValueWidget:clicked', '\nimport imath\nroot = plug.node().scriptNode()\ncolorValue = root[\'of_Center_Control\'][\'user\'][\'nodeColor\'].getValue()\nnodeName = root.selection()\nfor node in nodeName:\n    Gaffer.Metadata.registerValue( node, "nodeGadget:color", imath.Color3f(colorValue[0], colorValue[1], colorValue[2]) )\n    ' )
+Gaffer.Metadata.registerValue( __children["of_Center_Control"]["user"]["Annotate_Color"], 'description', '节点注释颜色' )
+Gaffer.Metadata.registerValue( __children["of_Center_Control"]["user"]["Annotate_str"], 'description', '输入注释内容' )
+Gaffer.Metadata.registerValue( __children["of_Center_Control"]["user"]["Type"], 'description', '注释行' )
+Gaffer.Metadata.registerValue( __children["of_Center_Control"]["user"]["Type"], 'plugValueWidget:type', 'GafferUI.PresetsPlugValueWidget' )
+Gaffer.Metadata.registerValue( __children["of_Center_Control"]["user"]["Type"], 'preset:check01', '0' )
+Gaffer.Metadata.registerValue( __children["of_Center_Control"]["user"]["Type"], 'preset:check02', '1' )
+Gaffer.Metadata.registerValue( __children["of_Center_Control"]["user"]["Type"], 'preset:check03', '2' )
+Gaffer.Metadata.registerValue( __children["of_Center_Control"]["user"]["Type"], 'preset:check04', '3' )
+Gaffer.Metadata.registerValue( __children["of_Center_Control"]["user"]["ADD"], 'description', '添加注释' )
+Gaffer.Metadata.registerValue( __children["of_Center_Control"]["user"]["ADD"], 'plugValueWidget:type', 'GafferUI.ButtonPlugValueWidget' )
+Gaffer.Metadata.registerValue( __children["of_Center_Control"]["user"]["ADD"], 'buttonPlugValueWidget:clicked', "\nimport imath\nroot = plug.node().scriptNode()\nstdName = root['of_Center_Control']['user']['Type'].getValue()\nAnnotateStr = root['of_Center_Control']['user']['Annotate_str'].getValue()\ncolorValue = root['of_Center_Control']['user']['Annotate_Color'].getValue()\nnodeName = root.selection()\nfor node in nodeName:\n    Gaffer.MetadataAlgo.addAnnotation( node, stdName, Gaffer.MetadataAlgo.Annotation( AnnotateStr, imath.Color3f(colorValue[0], colorValue[1], colorValue[2]))\n    " )
+Gaffer.Metadata.registerValue( __children["of_Center_Control"]["user"]["REMOVE"], 'description', '删除注释' )
+Gaffer.Metadata.registerValue( __children["of_Center_Control"]["user"]["REMOVE"], 'plugValueWidget:type', 'GafferUI.ButtonPlugValueWidget' )
+Gaffer.Metadata.registerValue( __children["of_Center_Control"]["user"]["REMOVE"], 'divider', True )
+Gaffer.Metadata.registerValue( __children["of_Center_Control"]["user"]["REMOVE"], 'buttonPlugValueWidget:clicked', "\nroot = plug.node().scriptNode()\nnodeName = root.selection()\nstdName = root['of_Center_Control']['user']['Type'].getValue()\nfor node in nodeName:\n    Gaffer.MetadataAlgo.removeAnnotation( node, stdName ) \n    " )
+Gaffer.Metadata.registerValue( __children["of_Center_Control"]["user"]["Open_Project_File"], 'plugValueWidget:type', 'GafferUI.ButtonPlugValueWidget' )
+Gaffer.Metadata.registerValue( __children["of_Center_Control"]["user"]["Open_Project_File"], 'buttonPlugValueWidget:clicked', '\nimport subprocess\nimport os\nroot = plug.node().scriptNode()\ncurrentFilePath = root[\'fileName\'].getValue()\ncurrentFilePath = os.path.dirname(currentFilePath)\nsubprocess.Popen(\'gio open "%s"\' % currentFilePath, shell=True)\n    ' )
+Gaffer.Metadata.registerValue( __children["of_Center_Control"]["user"]["Open_Project_File"], 'description', '' )
+__children["of_Center_Control"]["__uiPosition"].setValue( imath.V2f( -11.627306, 8.54999924 ) )
+
+
+del __children
+
