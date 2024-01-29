@@ -1,3 +1,4 @@
+# Gaffer.PlugAlgo
 ## replacePlug
 ```python
 GAFFER_API void replacePlug( GraphComponent *parent, PlugPtr plug );
@@ -73,3 +74,34 @@ Gaffer.PlugAlgo.canSetValueFromData(root['Flat']['parameters']['color'])
 Gaffer.PlugAlgo.canSetValueFromData(root['Flat']['parameters']['color'],IECore.StringData())
 ```
 ![](/png/Gif/Peek%202024-01-18%2017-49.gif)
+## canPromote
+```python
+GAFFER_API bool canPromote( const Plug *plug, const Plug *parent = nullptr );
+#如果调用 'promote（ plug， parent ）' 将
+#成功，否则为 false。
+Gaffer.PlugAlgo.canPromote(root['Box']['OSLObject']['in'])
+```
+![](/png/Gif/Peek%202024-01-29%2020-32.gif)
+## promote
+```python
+GAFFER_API Plug *promote( Plug *plug, Plug *parent = nullptr, const IECore::StringAlgo::MatchPattern &excludeMetadata = "layout:*" );
+#提升内部插头，返回新创建的外部插头。
+Gaffer.PlugAlgo.promote(root['Box']['OSLObject']['in'])
+```
+![](/png/Gif/Peek%202024-01-29%2020-37.gif)
+## promoteWithName
+```python
+GAFFER_API Plug *promoteWithName( Plug *plug, const IECore::InternedString &name, Plug *parent = nullptr, const IECore::StringAlgo::MatchPattern &excludeMetadata = "layout:*" );
+#作为“promote”，但通过提供 name 参数，您可以跳过额外的
+#升级后重命名步骤
+Gaffer.PlugAlgo.promoteWithName(root['Box']['OSLObject']['useTransform'],IECore.InternedString("test"))
+```
+![](/png/Gif/Peek%202024-01-29%2020-52.gif)
+## unpromote
+```python
+GAFFER_API void unpromote( Plug *plug );
+#取消升级以前升级的插件，删除
+#尽可能使用外部插头。
+Gaffer.PlugAlgo.unpromote(root['Box']['OSLObject']['useTransform'])
+```
+![](/png/Gif/Peek%202024-01-29%2020-55.gif)
