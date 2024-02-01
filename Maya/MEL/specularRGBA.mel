@@ -1,0 +1,7 @@
+
+setAttr "aiAOV_opacity.enabled" 0;
+
+setAttr "aiAOV_specular_direct.lightGroups" 1;
+setAttr "aiAOV_specular_indirect.lightGroups" 1;
+
+setAttr "aiAOV_RGBA.lightGroups" 1;
