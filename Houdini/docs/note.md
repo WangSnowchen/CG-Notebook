@@ -25,3 +25,7 @@ shop_old_shader_plugins
 lop_USD
 
 cop2_composite
+
+# group
+
+![](/png/houdini/Snipaste_2024-02-12_22-12-25.png)
