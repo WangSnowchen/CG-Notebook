@@ -29,3 +29,9 @@ cop2_composite
 # group
 
 ![](/png/houdini/Snipaste_2024-02-12_22-12-25.png)
+
+# 求一段管状模型的圆心轴
+
+![alt text](../../png/houdini/Snipaste_2024-02-13_02-42-26.png)
+
+通过groupexpend的step属性步进式的环选择管状模型的点，然后通过fuse焊接每一个环的点，求出中心点，通过add连接成线条。
