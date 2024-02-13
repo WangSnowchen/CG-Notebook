@@ -1,0 +1,73 @@
+import Gaffer
+import GafferOSL
+import GafferScene
+import IECore
+import imath
+
+Gaffer.Metadata.registerValue( parent, "serialiser:milestoneVersion", 1, persistent=False )
+Gaffer.Metadata.registerValue( parent, "serialiser:majorVersion", 3, persistent=False )
+Gaffer.Metadata.registerValue( parent, "serialiser:minorVersion", 11, persistent=False )
+Gaffer.Metadata.registerValue( parent, "serialiser:patchVersion", 0, persistent=False )
+
+__children = {}
+
+__children["Sphere"] = GafferScene.Sphere( "Sphere" )
+parent.addChild( __children["Sphere"] )
+__children["Sphere"].addChild( Gaffer.V2fPlug( "__uiPosition", defaultValue = imath.V2f( 0, 0 ), flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ) )
+__children["InPoint"] = GafferOSL.OSLShader( "InPoint" )
+parent.addChild( __children["InPoint"] )
+__children["InPoint"].loadShader( "ObjectProcessing/InPoint" )
+__children["InPoint"].addChild( Gaffer.V2fPlug( "__uiPosition", defaultValue = imath.V2f( 0, 0 ), flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ) )
+__children["PathFilter2"] = GafferScene.PathFilter( "PathFilter2" )
+parent.addChild( __children["PathFilter2"] )
+__children["PathFilter2"].addChild( Gaffer.V2fPlug( "__uiPosition", defaultValue = imath.V2f( 0, 0 ), flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ) )
+__children["OSLObject1"] = GafferOSL.OSLObject( "OSLObject1" )
+parent.addChild( __children["OSLObject1"] )
+__children["OSLObject1"]["primitiveVariables"].addChild( Gaffer.NameValuePlug( "P", Gaffer.V3fPlug( "value", defaultValue = imath.V3f( 0, 0, 0 ), interpretation = IECore.GeometricData.Interpretation.Point ), True, "primitiveVariable1", Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic ) )
+__children["OSLObject1"].addChild( Gaffer.V2fPlug( "__uiPosition", defaultValue = imath.V2f( 0, 0 ), flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ) )
+__children["VectorToFloat"] = GafferOSL.OSLShader( "VectorToFloat" )
+parent.addChild( __children["VectorToFloat"] )
+__children["VectorToFloat"].loadShader( "Conversion/VectorToFloat" )
+__children["VectorToFloat"].addChild( Gaffer.V2fPlug( "__uiPosition", defaultValue = imath.V2f( 0, 0 ), flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ) )
+__children["FloatToVector"] = GafferOSL.OSLShader( "FloatToVector" )
+parent.addChild( __children["FloatToVector"] )
+__children["FloatToVector"].loadShader( "Conversion/FloatToVector" )
+__children["FloatToVector"].addChild( Gaffer.V2fPlug( "__uiPosition", defaultValue = imath.V2f( 0, 0 ), flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ) )
+__children["CompareFloat"] = GafferOSL.OSLShader( "CompareFloat" )
+parent.addChild( __children["CompareFloat"] )
+__children["CompareFloat"].loadShader( "Utility/CompareFloat" )
+__children["CompareFloat"].addChild( Gaffer.V2fPlug( "__uiPosition", defaultValue = imath.V2f( 0, 0 ), flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ) )
+__children["SwitchFloat"] = GafferOSL.OSLShader( "SwitchFloat" )
+parent.addChild( __children["SwitchFloat"] )
+__children["SwitchFloat"].loadShader( "Utility/SwitchFloat" )
+__children["SwitchFloat"].addChild( Gaffer.V2fPlug( "__uiPosition", defaultValue = imath.V2f( 0, 0 ), flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ) )
+__children["InFloat"] = GafferOSL.OSLShader( "InFloat" )
+parent.addChild( __children["InFloat"] )
+__children["InFloat"].loadShader( "ObjectProcessing/InFloat" )
+__children["InFloat"].addChild( Gaffer.V2fPlug( "__uiPosition", defaultValue = imath.V2f( 0, 0 ), flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ) )
+__children["Sphere"]["__uiPosition"].setValue( imath.V2f( -349.183899, 212.10788 ) )
+__children["InPoint"]["__uiPosition"].setValue( imath.V2f( -425.990753, 201.999054 ) )
+__children["PathFilter2"]["paths"].setValue( IECore.StringVectorData( [ '/sphere' ] ) )
+__children["PathFilter2"]["__uiPosition"].setValue( imath.V2f( -333.854126, 207.763016 ) )
+__children["OSLObject1"]["in"].setInput( __children["Sphere"]["out"] )
+__children["OSLObject1"]["filter"].setInput( __children["PathFilter2"]["out"] )
+__children["OSLObject1"]["primitiveVariables"]["primitiveVariable1"]["value"].setInput( __children["FloatToVector"]["out"]["p"] )
+__children["OSLObject1"]["__uiPosition"].setValue( imath.V2f( -349.183899, 201.399048 ) )
+__children["VectorToFloat"]["parameters"]["p"].setInput( __children["InPoint"]["out"]["value"] )
+__children["VectorToFloat"]["__uiPosition"].setValue( imath.V2f( -413.168488, 201.999054 ) )
+__children["FloatToVector"]["parameters"]["x"].setInput( __children["VectorToFloat"]["out"]["x"] )
+__children["FloatToVector"]["parameters"]["y"].setInput( __children["SwitchFloat"]["out"]["out"] )
+__children["FloatToVector"]["parameters"]["z"].setInput( __children["VectorToFloat"]["out"]["z"] )
+__children["FloatToVector"]["__uiPosition"].setValue( imath.V2f( -365.824768, 201.999054 ) )
+__children["CompareFloat"]["parameters"]["condition"].setValue( 2 )
+__children["CompareFloat"]["parameters"]["a"].setInput( __children["VectorToFloat"]["out"]["y"] )
+__children["CompareFloat"]["__uiPosition"].setValue( imath.V2f( -398.398224, 191.824173 ) )
+__children["SwitchFloat"]["parameters"]["index"].setInput( __children["CompareFloat"]["out"]["success"] )
+__children["SwitchFloat"]["parameters"]["input0"].setInput( __children["InFloat"]["out"]["value"] )
+__children["SwitchFloat"]["parameters"]["input1"].setInput( __children["VectorToFloat"]["out"]["y"] )
+__children["SwitchFloat"]["__uiPosition"].setValue( imath.V2f( -379.922913, 190.02417 ) )
+__children["InFloat"]["__uiPosition"].setValue( imath.V2f( -392.110657, 185.408661 ) )
+
+
+del __children
+
