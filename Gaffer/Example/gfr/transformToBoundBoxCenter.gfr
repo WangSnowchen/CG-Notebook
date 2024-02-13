@@ -1,0 +1,53 @@
+import Gaffer
+import GafferScene
+import IECore
+import imath
+
+Gaffer.Metadata.registerValue( parent, "serialiser:milestoneVersion", 1, persistent=False )
+Gaffer.Metadata.registerValue( parent, "serialiser:majorVersion", 3, persistent=False )
+Gaffer.Metadata.registerValue( parent, "serialiser:minorVersion", 11, persistent=False )
+Gaffer.Metadata.registerValue( parent, "serialiser:patchVersion", 0, persistent=False )
+
+__children = {}
+
+__children["Dot"] = Gaffer.Dot( "Dot" )
+parent.addChild( __children["Dot"] )
+__children["Dot"].setup( GafferScene.ScenePlug( "in", ) )
+__children["Dot"].addChild( Gaffer.V2fPlug( "__uiPosition", defaultValue = imath.V2f( 0, 0 ), flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ) )
+__children["BoundQuery"] = GafferScene.BoundQuery( "BoundQuery" )
+parent.addChild( __children["BoundQuery"] )
+__children["BoundQuery"].addChild( Gaffer.V2fPlug( "__uiPosition", defaultValue = imath.V2f( 0, 0 ), flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ) )
+__children["Transform"] = GafferScene.Transform( "Transform" )
+parent.addChild( __children["Transform"] )
+__children["Transform"].addChild( Gaffer.V2fPlug( "__uiPosition", defaultValue = imath.V2f( 0, 0 ), flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ) )
+__children["PathFilter1"] = GafferScene.PathFilter( "PathFilter1" )
+parent.addChild( __children["PathFilter1"] )
+__children["PathFilter1"].addChild( Gaffer.V2fPlug( "__uiPosition", defaultValue = imath.V2f( 0, 0 ), flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ) )
+__children["Expression"] = Gaffer.Expression( "Expression" )
+parent.addChild( __children["Expression"] )
+__children["Expression"]["__in"].addChild( Gaffer.FloatPlug( "p0", defaultValue = 0.0, flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ) )
+__children["Expression"]["__in"].addChild( Gaffer.FloatPlug( "p1", defaultValue = 0.0, flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ) )
+__children["Expression"]["__in"].addChild( Gaffer.FloatPlug( "p2", defaultValue = 0.0, flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ) )
+__children["Expression"]["__out"].addChild( Gaffer.V3fPlug( "p0", direction = Gaffer.Plug.Direction.Out, defaultValue = imath.V3f( 0, 0, 0 ), flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ) )
+__children["Expression"].addChild( Gaffer.V2fPlug( "__uiPosition", defaultValue = imath.V2f( 0, 0 ), flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ) )
+__children["Dot"]["__uiPosition"].setValue( imath.V2f( -318.788147, 219.321899 ) )
+__children["BoundQuery"]["scene"].setInput( __children["Dot"]["out"] )
+__children["BoundQuery"]["location"].setValue( '${scene:path}' )
+__children["BoundQuery"]["__uiPosition"].setValue( imath.V2f( -333.264587, 209.894516 ) )
+__children["Transform"]["in"].setInput( __children["Dot"]["out"] )
+__children["Transform"]["filter"].setInput( __children["PathFilter1"]["out"] )
+__children["Transform"]["transform"]["translate"].setInput( __children["Expression"]["__out"]["p0"] )
+__children["Transform"]["transform"]["pivot"].setInput( __children["BoundQuery"]["center"] )
+__children["Transform"]["__uiPosition"].setValue( imath.V2f( -318.788147, 209.128922 ) )
+__children["PathFilter1"]["paths"].setValue( IECore.StringVectorData( [ '...' ] ) )
+__children["PathFilter1"]["__uiPosition"].setValue( imath.V2f( -305.822571, 214.429779 ) )
+__children["Expression"]["__in"]["p0"].setInput( __children["Transform"]["transform"]["pivot"]["x"] )
+__children["Expression"]["__in"]["p1"].setInput( __children["Transform"]["transform"]["pivot"]["y"] )
+__children["Expression"]["__in"]["p2"].setInput( __children["Transform"]["transform"]["pivot"]["z"] )
+__children["Expression"]["__uiPosition"].setValue( imath.V2f( -326.493988, 214.046616 ) )
+__children["Expression"]["__engine"].setValue( 'python' )
+__children["Expression"]["__expression"].setValue( 'import imath\n\nparent["__out"]["p0"] = imath.V3f( -parent["__in"]["p0"], -parent["__in"]["p1"], -parent["__in"]["p2"] )' )
+
+
+del __children
+
