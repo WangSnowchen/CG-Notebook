@@ -1,0 +1,97 @@
+#usda 1.0
+
+over "geo"
+{
+    over "sphere" (
+        prepend apiSchemas = ["MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </geo/materials/material_452aa9cfc7ad8c047bf2158352d89a24>
+    }
+
+    def Scope "materials" (
+        cortex_autoMaterials = true
+    )
+    {
+        def Material "material_452aa9cfc7ad8c047bf2158352d89a24"
+        {
+            token outputs:arnold:surface.connect = </geo/materials/material_452aa9cfc7ad8c047bf2158352d89a24/arnold_surface_shaders/StandardSurface1.outputs:DEFAULT_OUTPUT>
+
+            def Scope "arnold_surface_shaders"
+            {
+                def Shader "StandardSurface1"
+                {
+                    uniform token info:id = "arnold:standard_surface"
+                    string inputs:aov_id1 = ""
+                    string inputs:aov_id2 = ""
+                    string inputs:aov_id3 = ""
+                    string inputs:aov_id4 = ""
+                    string inputs:aov_id5 = ""
+                    string inputs:aov_id6 = ""
+                    string inputs:aov_id7 = ""
+                    string inputs:aov_id8 = ""
+                    float inputs:base = 1
+                    color3f inputs:base_color = (1, 0, 0)
+                    bool inputs:caustics = 0
+                    float inputs:coat = 0
+                    float inputs:coat_affect_color = 0
+                    float inputs:coat_affect_roughness = 0
+                    float inputs:coat_anisotropy = 0
+                    color3f inputs:coat_color = (1, 1, 1)
+                    float inputs:coat_IOR = 1.5
+                    float3 inputs:coat_normal = (0, 0, 0)
+                    float inputs:coat_rotation = 0
+                    float inputs:coat_roughness = 0.1
+                    int inputs:dielectric_priority = 0
+                    float inputs:diffuse_roughness = 0
+                    float inputs:emission = 0
+                    color3f inputs:emission_color = (1, 1, 1)
+                    bool inputs:exit_to_background = 0
+                    color3f inputs:id1 = (0, 0, 0)
+                    color3f inputs:id2 = (0, 0, 0)
+                    color3f inputs:id3 = (0, 0, 0)
+                    color3f inputs:id4 = (0, 0, 0)
+                    color3f inputs:id5 = (0, 0, 0)
+                    color3f inputs:id6 = (0, 0, 0)
+                    color3f inputs:id7 = (0, 0, 0)
+                    color3f inputs:id8 = (0, 0, 0)
+                    float inputs:indirect_diffuse = 1
+                    float inputs:indirect_specular = 1
+                    bool inputs:internal_reflections = 1
+                    float inputs:metalness = 0
+                    float3 inputs:normal = (0, 0, 0)
+                    color3f inputs:opacity = (1, 1, 1)
+                    float inputs:sheen = 0
+                    color3f inputs:sheen_color = (1, 1, 1)
+                    float inputs:sheen_roughness = 0.3
+                    float inputs:specular = 1
+                    float inputs:specular_anisotropy = 0
+                    color3f inputs:specular_color = (1, 1, 1)
+                    float inputs:specular_IOR = 1.5
+                    float inputs:specular_rotation = 0
+                    float inputs:specular_roughness = 0.2
+                    float inputs:subsurface = 0
+                    float inputs:subsurface_anisotropy = 0
+                    color3f inputs:subsurface_color = (1, 1, 1)
+                    color3f inputs:subsurface_radius = (1, 1, 1)
+                    float inputs:subsurface_scale = 1
+                    string inputs:subsurface_type = "randomwalk"
+                    float3 inputs:tangent = (0, 0, 0)
+                    float inputs:thin_film_IOR = 1.5
+                    float inputs:thin_film_thickness = 0
+                    bool inputs:thin_walled = 0
+                    float inputs:transmission = 0
+                    color3f inputs:transmission_color = (1, 1, 1)
+                    float inputs:transmission_depth = 0
+                    float inputs:transmission_dispersion = 0
+                    float inputs:transmission_extra_roughness = 0
+                    color3f inputs:transmission_scatter = (0, 0, 0)
+                    float inputs:transmission_scatter_anisotropy = 0
+                    bool inputs:transmit_aovs = 0
+                    token outputs:DEFAULT_OUTPUT
+                }
+            }
+        }
+    }
+}
+
