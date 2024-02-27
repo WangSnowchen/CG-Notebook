@@ -1,0 +1,24 @@
+shader sdCircle (
+    floor radius,
+    vector multivector,
+    output color floatToColor
+) 
+{
+    
+    vector pos;
+    vector sdCircle;
+    
+    pos = P * multivector;
+    sdCircle = length(pos) - radius;
+    float r = sdCircle.x;
+    float g = sdCircle.y;
+    float b = sdCircle.z;
+    
+    floatToColor = color(r,g,b);
+
+}
+
+
+
+
+
