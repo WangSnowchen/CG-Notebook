@@ -1,3 +1,8 @@
+
+> 编译须知:可以使用arnold自带的oslc来编译
+> oslc -o <output.oso> <input.osl>
+
+
 OSL 包括以下类型的结构
 
 - 范围声明
