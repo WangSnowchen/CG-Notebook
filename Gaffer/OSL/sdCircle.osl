@@ -1,7 +1,7 @@
 shader sdCircle (
-    floor radius,
-    vector multivector,
-    output color floatToColor
+    float radius = 1.0,
+    vector multivector = vector(1,1,1),
+    output color floatToColor = 0
 ) 
 {
     
