@@ -1,0 +1,59 @@
+import Gaffer
+import GafferOSL
+import GafferScene
+import IECore
+import imath
+
+Gaffer.Metadata.registerValue( parent, "serialiser:milestoneVersion", 1, persistent=False )
+Gaffer.Metadata.registerValue( parent, "serialiser:majorVersion", 3, persistent=False )
+Gaffer.Metadata.registerValue( parent, "serialiser:minorVersion", 12, persistent=False )
+Gaffer.Metadata.registerValue( parent, "serialiser:patchVersion", 0, persistent=False )
+
+__children = {}
+
+__children["Plane"] = GafferScene.Plane( "Plane" )
+parent.addChild( __children["Plane"] )
+__children["Plane"].addChild( Gaffer.V2fPlug( "__uiPosition", defaultValue = imath.V2f( 0, 0 ), flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ) )
+__children["PathFilter2"] = GafferScene.PathFilter( "PathFilter2" )
+parent.addChild( __children["PathFilter2"] )
+__children["PathFilter2"].addChild( Gaffer.V2fPlug( "__uiPosition", defaultValue = imath.V2f( 0, 0 ), flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ) )
+__children["OSLCode2"] = GafferOSL.OSLCode( "OSLCode2" )
+parent.addChild( __children["OSLCode2"] )
+__children["OSLCode2"]["parameters"].addChild( Gaffer.StringPlug( "test_string", defaultValue = '', flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ) )
+__children["OSLCode2"]["parameters"].addChild( Gaffer.StringPlug( "int_list", defaultValue = '', flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ) )
+__children["OSLCode2"]["parameters"].addChild( Gaffer.IntPlug( "array_length", defaultValue = 0, flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ) )
+__children["OSLCode2"]["out"].addChild( Gaffer.StringPlug( "string_out", direction = Gaffer.Plug.Direction.Out, defaultValue = '', flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ) )
+__children["OSLCode2"].addChild( Gaffer.V2fPlug( "__uiPosition", defaultValue = imath.V2f( 0, 0 ), flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ) )
+__children["OSLObject2"] = GafferOSL.OSLObject( "OSLObject2" )
+parent.addChild( __children["OSLObject2"] )
+__children["OSLObject2"]["primitiveVariables"].addChild( Gaffer.NameValuePlug( "customString", Gaffer.StringPlug( "value", defaultValue = '', flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ), True, "primitiveVariable", Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic ) )
+__children["OSLObject2"].addChild( Gaffer.V2fPlug( "__uiPosition", defaultValue = imath.V2f( 0, 0 ), flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ) )
+__children["Expression8"] = Gaffer.Expression( "Expression8" )
+parent.addChild( __children["Expression8"] )
+__children["Expression8"]["__in"].addChild( Gaffer.StringPlug( "p0", defaultValue = '', flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ) )
+__children["Expression8"]["__out"].addChild( Gaffer.IntPlug( "p0", direction = Gaffer.Plug.Direction.Out, defaultValue = 0, flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ) )
+__children["Expression8"].addChild( Gaffer.V2fPlug( "__uiPosition", defaultValue = imath.V2f( 0, 0 ), flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ) )
+__children["Plane"]["dimensions"]["x"].setValue( 4.0 )
+__children["Plane"]["dimensions"]["y"].setInput( __children["Plane"]["dimensions"]["x"] )
+__children["Plane"]["divisions"]["x"].setValue( 4 )
+__children["Plane"]["divisions"]["y"].setInput( __children["Plane"]["divisions"]["x"] )
+__children["Plane"]["__uiPosition"].setValue( imath.V2f( -51.5134277, 21.7485275 ) )
+__children["PathFilter2"]["paths"].setValue( IECore.StringVectorData( [ '/plane' ] ) )
+__children["PathFilter2"]["__uiPosition"].setValue( imath.V2f( -19.3989582, 13.9518299 ) )
+__children["OSLCode2"]["parameters"]["test_string"].setValue( 'ptnum' )
+__children["OSLCode2"]["parameters"]["int_list"].setValue( '0,1' )
+__children["OSLCode2"]["parameters"]["array_length"].setInput( __children["Expression8"]["__out"]["p0"] )
+__children["OSLCode2"]["code"].setValue( 'int index;\ngetattribute( "shading:index", index );\n\nstring_out = "";\n\nif (int_list != "")\n\n{\n\tstring int_array[50];\n\tsplit( int_list, int_array, "," );\n\tint start_index, end_index;\n\tstart_index = stoi(int_array[0]);\n\tfor (int n=start_index; n<array_length; n++){\n\t\tstring cur_index = int_array[n];\n\t\tif (stoi(cur_index) == index){\n\t\t\tstring_out = test_string;\n\t\t}\n\t}\n}' )
+__children["OSLCode2"]["__uiPosition"].setValue( imath.V2f( -70.8917618, 2.98374939 ) )
+__children["OSLObject2"]["in"].setInput( __children["Plane"]["out"] )
+__children["OSLObject2"]["filter"].setInput( __children["PathFilter2"]["out"] )
+__children["OSLObject2"]["primitiveVariables"]["primitiveVariable"]["value"].setInput( __children["OSLCode2"]["out"]["string_out"] )
+__children["OSLObject2"]["__uiPosition"].setValue( imath.V2f( -51.5134277, 2.98374939 ) )
+__children["Expression8"]["__in"]["p0"].setInput( __children["OSLCode2"]["parameters"]["int_list"] )
+__children["Expression8"]["__uiPosition"].setValue( imath.V2f( -81.9204941, 2.15403938 ) )
+__children["Expression8"]["__engine"].setValue( 'python' )
+__children["Expression8"]["__expression"].setValue( 'indices = parent["__in"]["p0"]\nparent["__out"]["p0"] = len(indices.split(","))' )
+
+
+del __children
+
