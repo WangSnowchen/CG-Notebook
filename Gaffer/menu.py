@@ -57,6 +57,15 @@ def resetVisualiserScale(menu):
     scene_viewer = mainWindow.getLayout().editor(GafferUI.Viewer)
     scene_view = scene_viewer.view()
     scene_view["drawingMode"]["visualiser"]["scale"].setValue(1.0)
+def changeToolOrientation(menu):
+    #更改旋转位移工具的轴向为自身坐标系
+    scriptWindow = menu.ancestor( GafferUI.ScriptWindow )
+    script = scriptWindow.scriptNode()
+    mainWindow = GafferUI.ScriptWindow.acquire( script )
+    scene_viewer = mainWindow.getLayout().editor(GafferUI.Viewer)
+    scene_view = scene_viewer.view()
+    scene_view["tools"]["TranslateTool"]["orientation"].setValue(0)
+    scene_view["tools"]["RotateTool"]["orientation"].setValue(0)
 
 
 
@@ -89,5 +98,12 @@ GafferUI.ScriptWindow.menuDefinition(application).append(
 	{
 		"command" : functools.partial( resetVisualiserScale ) , 
 		"label" : "resetVisualiserScale"
+	}
+)
+GafferUI.ScriptWindow.menuDefinition(application).append(
+	"/WXC/tools/" + "changeToolOrientation",
+	{
+		"command" : functools.partial( changeToolOrientation ) , 
+		"label" : "changeToolOrientation"
 	}
 )
