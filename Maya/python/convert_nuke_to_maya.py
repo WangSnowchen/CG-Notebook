@@ -1,4 +1,5 @@
 from PySide2 import QtWidgets, QtCore
+import re
 import maya.cmds as cmds
 
 class MyWindow(QtWidgets.QWidget):
@@ -7,10 +8,6 @@ class MyWindow(QtWidgets.QWidget):
         self.setWindowTitle('convert_nuke_to_maya')
         self.setFixedSize(300, 200)  # 锁定窗口大小
         self.create_layout()
-
-        self.timer = QtCore.QTimer(self)  # 创建一个定时器
-        self.timer.timeout.connect(self.update_color)
-        self.timer.start(100)  # 每100毫秒刷新一次颜色
 
     def create_layout(self):
         self.main_layout = QtWidgets.QVBoxLayout()
@@ -33,22 +30,27 @@ class MyWindow(QtWidgets.QWidget):
 
         self.my_button.clicked.connect(self.button_clicked)
 
-    def update_color(self):
-        selected_objects = cmds.ls(selection=True)  # 获取当前选中对象
-        if selected_objects:
-            shape = cmds.listRelatives(selected_objects[0], shapes=True)  # 获取所选对象的形状节点
-            if shape:
-                color = cmds.getAttr(shape[0] + '.color')  # 获取颜色属性
-                self.color_label.setText('Color: {}'.format(color))
-            else:
-                self.color_label.setText('所选对象没有颜色属性')
-        else:
-            self.color_label.setText('没有选中对象')
-
     def button_clicked(self):
         user_text = self.text_field.toPlainText()
-        cmds.confirmDialog(title='User Input', message='You entered: {}'.format(user_text))
+        txt = user_text  # 使用文本框输入的内容替换txt的内容
+    
+        white_match = re.search(r'white\s+([\d.]+)', txt)
+        multiply_match = re.search(r'multiply\s+{([\d.\s]+)}', txt)
+        white = float(white_match.group(1))
+        multiply = [float(num) for num in multiply_match.group(1).split()]
+    
+        selected_lights = cmds.ls(selection=True)
+        
+        for light in selected_lights:
+            light_color = cmds.getAttr(light + ".color")[0]
+            light_intensity = cmds.getAttr(light + ".intensity")
+            new_color = [color * factor for color, factor in zip(light_color, multiply)]
+            new_intensity = white * light_intensity
+    
+            cmds.setAttr(light + ".color", new_color[0], new_color[1], new_color[2], type="double3")
+            cmds.setAttr(light + ".intensity", new_intensity)
 
 # 创建窗口实例并显示
 my_window = MyWindow()
+my_window.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)  # 窗口一直在最上层
 my_window.show()
