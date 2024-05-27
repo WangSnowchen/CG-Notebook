@@ -1,4 +1,3 @@
-from types import new_class
 from PySide2 import QtWidgets, QtCore
 import re
 import maya.cmds as cmds
