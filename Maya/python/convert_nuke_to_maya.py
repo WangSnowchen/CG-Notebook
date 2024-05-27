@@ -1,3 +1,4 @@
+from types import new_class
 from PySide2 import QtWidgets, QtCore
 import re
 import maya.cmds as cmds
@@ -33,22 +34,25 @@ class MyWindow(QtWidgets.QWidget):
     def button_clicked(self):
         user_text = self.text_field.toPlainText()
         txt = user_text  # 使用文本框输入的内容替换txt的内容
+        selected_lights = cmds.ls(selection=True)
     
         white_match = re.search(r'white\s+([\d.]+)', txt)
         multiply_match = re.search(r'multiply\s+{([\d.\s]+)}', txt)
-        white = float(white_match.group(1))
-        multiply = [float(num) for num in multiply_match.group(1).split()]
-    
-        selected_lights = cmds.ls(selection=True)
-        
-        for light in selected_lights:
-            light_color = cmds.getAttr(light + ".color")[0]
-            light_intensity = cmds.getAttr(light + ".intensity")
-            new_color = [color * factor for color, factor in zip(light_color, multiply)]
-            new_intensity = white * light_intensity
-    
-            cmds.setAttr(light + ".color", new_color[0], new_color[1], new_color[2], type="double3")
-            cmds.setAttr(light + ".intensity", new_intensity)
+
+        if white_match != None:
+            white = float(white_match.group(1))
+            for light in selected_lights:
+                light_intensity = cmds.getAttr(light + ".intensity")
+                new_intensity = white * light_intensity
+
+                cmds.setAttr(light + ".intensity", new_intensity)
+        if multiply_match != None:
+            multiply = [float(num) for num in multiply_match.group(1).split()]
+            for light in selected_lights:
+                light_color = cmds.getAttr(light + ".color")[0]
+                new_color = [color * factor for color, factor in zip(light_color, multiply)]
+
+                cmds.setAttr(light + ".color", new_color[0], new_color[1], new_color[2], type="double3")
 
 # 创建窗口实例并显示
 my_window = MyWindow()
