@@ -9,9 +9,9 @@ class MyWindow(QtWidgets.QWidget):
         self.setFixedSize(300, 200)  
         self.create_layout()  
 
-        self.timer = QtCore.QTimer(self)  # 创建一个定时器
-        self.timer.timeout.connect(self.update_color)
-        self.timer.start(100)
+        # self.timer = QtCore.QTimer(self)  # 创建一个定时器
+        # self.timer.timeout.connect(self.update_color)
+        # self.timer.start(100)
 
     def create_layout(self):  
         self.main_layout = QtWidgets.QVBoxLayout()  
@@ -34,19 +34,19 @@ class MyWindow(QtWidgets.QWidget):
 
         self.my_button.clicked.connect(self.button_clicked)  
 
-    def update_color(self):
-            selected_objects = cmds.ls(selection=True)  # 获取当前选中对象
-            if selected_objects: 
-                shape = cmds.listRelatives(selected_objects[0], shapes=True)  # 获取所选对象的形状节点
-                if shape:
-                    color = cmds.getAttr(shape[0] + '.color')  # 获取颜色属性
-                    self.color_label.setText('Color: {}'.format(color))
-                else:
-                    self.color_label.setText('所选对象没有颜色属性')
-                    color = cmds.getAttr(selected_objects[0] + '.color')
-                    self.color_label.setText('Color: {}'.format(color))
-            else:
-                self.color_label.setText('没有选中对象')
+    # def update_color(self):
+    #         selected_objects = cmds.ls(selection=True)  # 获取当前选中对象
+    #         if selected_objects: 
+    #             shape = cmds.listRelatives(selected_objects[0], shapes=True)  # 获取所选对象的形状节点
+    #             if shape:
+    #                 color = cmds.getAttr(shape[0] + '.color')  # 获取颜色属性
+    #                 self.color_label.setText('Color: {}'.format(color))
+    #             else:
+    #                 self.color_label.setText('所选对象没有颜色属性')
+    #                 color = cmds.getAttr(selected_objects[0] + '.color')
+    #                 self.color_label.setText('Color: {}'.format(color))
+    #         else:
+    #             self.color_label.setText('没有选中对象')
 
     def button_clicked(self):  
         user_text = self.text_field.toPlainText()  
