@@ -22,8 +22,9 @@ for node in read_nodes:
     
     version = extract_version(dir_path)
     
-    check_path = dir_path[:-5]
-    
+    check_path = dir_path.replace(f'/{version}', '')
+    #如果是立体视频，这里对路径还需要进行一次清理
+    #check_path = check_path.replace('%V', 'left')
     subfolders = [f for f in os.listdir(check_path) if os.path.join(check_path,f)]
     subfolders.sort()
     
