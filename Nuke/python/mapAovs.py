@@ -51,8 +51,8 @@ class MapAovs(object):
         combined_channels = []
         # 根据前缀组合通道
         for prefix in ['RGBA', 'emission']:
-            combined_channels.extend([i for i in all_channels if i.startswith(prefix)])
-
+            combined_channels.extend([i for i in all_channels if i.startswith(prefix) and i != 'RGBA_default'])
+        combined_channels.sort()
         # 创建通道节点
         self.create_channels_node(combined_channels)
     def create_channels_node(self, channel_array):
