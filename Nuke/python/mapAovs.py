@@ -50,8 +50,10 @@ class MapAovs(object):
         # 初始化组合通道的列表
         combined_channels = []
         # 根据前缀组合通道
+        # 遍历指定的前缀列表，筛选出符合条件的通道并添加到 combined_channels 列表中
         for prefix in ['RGBA', 'emission']:
             combined_channels.extend([i for i in all_channels if i.startswith(prefix) and i != 'RGBA_default'])
+        # 对 combined_channels 列表进行排序
         combined_channels.sort()
         # 创建通道节点
         self.create_channels_node(combined_channels)
