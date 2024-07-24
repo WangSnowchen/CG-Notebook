@@ -64,6 +64,10 @@ class MapAovs(object):
         """
         dot_nodes, remove_nodes, shuffle_nodes, merge_nodes = [], [], [], []
 
+        # 修改节点的x和y坐标
+        all_node_x = 330
+        merge_node_y = 1800
+
         # 遍历通道数组，为每个通道创建节点
         # 遍历通道数组中的每一层
         for index, layer in enumerate(channel_array):
@@ -141,10 +145,10 @@ class MapAovs(object):
         # 设置节点的位置
         # 遍历每个节点组，设置每个节点的位置
         for index, (dot_node, remove_node, shuffle_node, merge_node) in enumerate(zip(dot_nodes, remove_nodes, shuffle_nodes, merge_nodes)):
-            dot_node.setXYpos(self.start_xpos + 125 * (index + 1) - dot_node.screenWidth() // 2, self.start_ypos + 0 - self.start_node.screenHeight() // 2)
-            remove_node.setXYpos(self.start_xpos + 125 * (index + 1) - remove_node.screenWidth() // 2, self.start_ypos + 60 - self.start_node.screenHeight() // 2)
-            shuffle_node.setXYpos(self.start_xpos + 125 * (index + 1) - shuffle_node.screenWidth() // 2, self.start_ypos + 120 - self.start_node.screenHeight() // 2)
-            merge_node.setXYpos(self.start_xpos + 125 * (index + 1) - merge_node.screenWidth() // 2, self.start_ypos + 240 - self.start_node.screenHeight() // 2)
+            dot_node.setXYpos(self.start_xpos + all_node_x * (index + 1) - dot_node.screenWidth() // 2, self.start_ypos + 0 - self.start_node.screenHeight() // 2)
+            remove_node.setXYpos(self.start_xpos + all_node_x * (index + 1) - remove_node.screenWidth() // 2, self.start_ypos + 60 - self.start_node.screenHeight() // 2)
+            shuffle_node.setXYpos(self.start_xpos + all_node_x * (index + 1) - shuffle_node.screenWidth() // 2, self.start_ypos + 120 - self.start_node.screenHeight() // 2)
+            merge_node.setXYpos(self.start_xpos + all_node_x * (index + 1) - merge_node.screenWidth() // 2, self.start_ypos + merge_node_y - self.start_node.screenHeight() // 2)
 
 
 def main():
