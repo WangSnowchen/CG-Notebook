@@ -1,5 +1,6 @@
 import pymel.core as pm
 import os
+
 def getdir():
 	# full_Path = pm.renderSettings(firstImageName = 1,fullPathTemp = 1)[0]
 	# dir = full_Path.replace('\\','/')
