@@ -31,5 +31,3 @@ def connect_light_to_aov():
     except Exception as e:
         cmds.warning("连接灯光到AOV时出现错误：{}".format(str(e)))
 
-# 调用函数连接灯光到对应的AOV
-connect_light_to_aov()
