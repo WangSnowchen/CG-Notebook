@@ -1,7 +1,6 @@
 import maya.cmds as cmds
-
-light_type_list = ['directionalLight', 'spotLight', 'pointLight', 'areaLight', 'aiAreaLight', 'aiSkyDomeLight', 'aiMeshLight', 'aiPhotometricLight', 'aiLightPortal']
-light_filter = ['aiBarndoor', 'aiGobo', 'aiLightBlocker', 'aiLightDecay']
+import via as light_type_list
+import via as light_filter
 
 def blocker_create():
     try:
