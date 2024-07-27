@@ -58,6 +58,33 @@ class LightGroupManager:
         else:
             cmds.warning(f"没有找到 aiAov 属性值为 {aov_name} 的灯光对象。")
 
+    def create_light_at_selected_object_center(lightType: str):
+        try:
+            selected_objects = cmds.ls(selection=True)
+            if not selected_objects:
+                raise ValueError("Please select at least one object.")
+
+            bbox = cmds.exactWorldBoundingBox(selected_objects)
+            bbox_min_x, bbox_min_y, bbox_min_z, bbox_max_x, bbox_max_y, bbox_max_z = bbox
+
+            bbox_center_x = round((bbox_min_x + bbox_max_x) / 2, 3)
+            bbox_center_y = round((bbox_min_y + bbox_max_y) / 2, 3)
+            bbox_center_z = round((bbox_min_z + bbox_max_z) / 2, 3)
+
+            light = cmds.createNode(lightType)
+            transform_node = cmds.listRelatives(light, parent=True)[0]  # 获取变换节点
+
+            cmds.xform(transform_node, translation=(bbox_center_x, bbox_center_y, bbox_center_z))
+            cmds.xform(transform_node, rotation=(90, 0, 0))
+
+            print(f"Light created at ({bbox_center_x}, {bbox_center_y}, {bbox_center_z})")
+
+            return transform_node
+        except Exception as e:
+            print(f"Error: {e}")
+            return None
+
+
 # 示例调用
 # light_type_list = ['directionalLight', 'spotLight', 'pointLight', 'areaLight', 'aiAreaLight', 'aiSkyDomeLight', 'aiMeshLight', 'aiPhotometricLight', 'aiLightPortal']
 # manager = LightGroupManager(light_type_list)
