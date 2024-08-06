@@ -66,7 +66,7 @@ class MapAovs(object):
 
         # 修改节点的x和y坐标
         all_node_x = 330
-        merge_node_y = 1800
+        merge_node_y = 1100
 
         # 遍历通道数组，为每个通道创建节点
         # 遍历通道数组中的每一层
