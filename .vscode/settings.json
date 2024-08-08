@@ -1,4 +1,11 @@
 {
     "background.enabled": true,
+    "background.fullscreen": {
+        "images": ["https://github.com/WangSnowchen/CG-Notebook/blob/main/png/backgroup_image/xiamu.jpg"],
+        "opacity": 0.91,
+        "size": "cover",
+        "position": "center",
+        "interval": 0
+    },
     "python.analysis.typeCheckingMode": "off"
 }
