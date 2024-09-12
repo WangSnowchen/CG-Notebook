@@ -23,3 +23,10 @@ def rename_files(path: str, ori_name: str, replace_name: str):
 # 调用示例
 #rename_files('/home/wangxuechen/Documents/test', 'char_mask_right', 'char_mask_left')
 
+
+def change_stereo_file_path():
+    read_nodes = [node for node in nuke.allNodes() if node.Class() == 'Read']
+    for node in read_nodes:
+        file_path = node['file'].value()
+        new_file_path = file_path.replace('left', '%V').replace('right', '%V')
+        node['file'].setValue(new_file_path)
