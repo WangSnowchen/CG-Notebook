@@ -86,3 +86,43 @@ if __name__ == "__main__":
     compPath = nuke.scriptName()
     manager = CameraFocalLengthManager(compPath)
     manager.update_focal_length()
+
+#自动检索文件里的所有Read节点，更新文件夹下最新的版本exr
+class VersionUpdater:
+    def __init__(self):
+        pass
+
+    def extract_version(self, file_path):
+        """从文件路径中提取版本号"""
+        match = re.search(r'v\d+', file_path)
+        if match:
+            return match.group()
+        else:
+            return None
+
+    def update_read_nodes(self):
+        """更新所有Read节点的文件路径"""
+        read_nodes = [node for node in nuke.allNodes() if node.Class() == 'Read']
+        for node in read_nodes:
+            file_path = node['file'].value()
+            dir_path = os.path.dirname(file_path)
+            version = self.extract_version(dir_path)
+            
+            check_path = dir_path.replace(f'/{version}', '')
+            # 如果是立体视频，这里对路径还需要进行一次清理
+            # check_path = check_path.replace('%V', 'left')
+            subfolders = [f for f in os.listdir(check_path) if os.path.isdir(os.path.join(check_path, f))]
+            subfolders.sort()
+            
+            if version and subfolders:
+                highest_version = subfolders[-1]
+                if version != highest_version:
+                    new_file_path = file_path.replace(version, highest_version)
+                    node['file'].setValue(new_file_path)
+
+# 使用方法
+version_updater = VersionUpdater()
+version_updater.update_read_nodes()
+
+
+
