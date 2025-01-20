@@ -148,7 +148,11 @@ class MapAovs(object):
             dot_node.setXYpos(self.start_xpos + all_node_x * (index + 1) - dot_node.screenWidth() // 2, self.start_ypos + 0 - self.start_node.screenHeight() // 2)
             remove_node.setXYpos(self.start_xpos + all_node_x * (index + 1) - remove_node.screenWidth() // 2, self.start_ypos + 60 - self.start_node.screenHeight() // 2)
             shuffle_node.setXYpos(self.start_xpos + all_node_x * (index + 1) - shuffle_node.screenWidth() // 2, self.start_ypos + 120 - self.start_node.screenHeight() // 2)
-            merge_node.setXYpos(self.start_xpos + all_node_x * (index + 1) - merge_node.screenWidth() // 2, self.start_ypos + merge_node_y - self.start_node.screenHeight() // 2)
+            # 修复Dot点和第一个Merge节点之间的高度差异
+            if index == 0:
+                merge_node.setXYpos(self.start_xpos + all_node_x * (index + 1) - merge_node.screenWidth() // 2, self.start_ypos + merge_node_y - self.start_node.screenHeight() // 2 + 4)
+            else:
+                merge_node.setXYpos(self.start_xpos + all_node_x * (index + 1) - merge_node.screenWidth() // 2, self.start_ypos + merge_node_y - self.start_node.screenHeight() // 2)
 
 
 def main():
