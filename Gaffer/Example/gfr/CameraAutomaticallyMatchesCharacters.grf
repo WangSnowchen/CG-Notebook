@@ -1,0 +1,51 @@
+import Gaffer
+import GafferScene
+import imath
+
+Gaffer.Metadata.registerValue( parent, "serialiser:milestoneVersion", 1, persistent=False )
+Gaffer.Metadata.registerValue( parent, "serialiser:majorVersion", 5, persistent=False )
+Gaffer.Metadata.registerValue( parent, "serialiser:minorVersion", 5, persistent=False )
+Gaffer.Metadata.registerValue( parent, "serialiser:patchVersion", 0, persistent=False )
+
+__children = {}
+
+__children["BoundQuery"] = GafferScene.BoundQuery( "BoundQuery" )
+parent.addChild( __children["BoundQuery"] )
+__children["BoundQuery"].addChild( Gaffer.V2fPlug( "__uiPosition", defaultValue = imath.V2f( 0, 0 ), flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ) )
+__children["Camera"] = GafferScene.Camera( "Camera" )
+parent.addChild( __children["Camera"] )
+__children["Camera"]["user"].addChild( Gaffer.FloatPlug( "zSize", defaultValue = 0.0, flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ) )
+__children["Camera"].addChild( Gaffer.V2fPlug( "__uiPosition", defaultValue = imath.V2f( 0, 0 ), flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ) )
+__children["Dot"] = Gaffer.Dot( "Dot" )
+parent.addChild( __children["Dot"] )
+__children["Dot"].setup( GafferScene.ScenePlug( "in", ) )
+__children["Dot"].addChild( Gaffer.V2fPlug( "__uiPosition", defaultValue = imath.V2f( 0, 0 ), flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ) )
+__children["MergeScenes"] = GafferScene.MergeScenes( "MergeScenes" )
+parent.addChild( __children["MergeScenes"] )
+__children["MergeScenes"]["in"].resize( 3 )
+__children["MergeScenes"].addChild( Gaffer.V2fPlug( "__uiPosition", defaultValue = imath.V2f( 0, 0 ), flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ) )
+__children["Expression"] = Gaffer.Expression( "Expression" )
+parent.addChild( __children["Expression"] )
+__children["Expression"]["__in"].addChild( Gaffer.FloatPlug( "p0", defaultValue = 0.0, flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ) )
+__children["Expression"]["__in"].addChild( Gaffer.FloatPlug( "p1", defaultValue = 0.0, flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ) )
+__children["Expression"]["__out"].addChild( Gaffer.FloatPlug( "p0", direction = Gaffer.Plug.Direction.Out, defaultValue = 0.0, flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ) )
+__children["Expression"]["__out"].addChild( Gaffer.FloatPlug( "p1", direction = Gaffer.Plug.Direction.Out, defaultValue = 0.0, flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ) )
+__children["Expression"].addChild( Gaffer.V2fPlug( "__uiPosition", defaultValue = imath.V2f( 0, 0 ), flags = Gaffer.Plug.Flags.Default | Gaffer.Plug.Flags.Dynamic, ) )
+__children["BoundQuery"]["scene"].setInput( __children["Dot"]["out"] )
+__children["BoundQuery"]["__uiPosition"].setValue( imath.V2f( -9.23051929, 11.2055588 ) )
+Gaffer.Metadata.registerValue( __children["Camera"]["user"]["zSize"], 'nodule:type', '' )
+__children["Camera"]["transform"]["translate"]["y"].setInput( __children["Expression"]["__out"]["p0"] )
+__children["Camera"]["transform"]["translate"]["z"].setInput( __children["Expression"]["__out"]["p1"] )
+__children["Camera"]["__uiPosition"].setValue( imath.V2f( 3.46233368, 6.12335873 ) )
+__children["Dot"]["__uiPosition"].setValue( imath.V2f( 0.46233356, 18.53759 ) )
+__children["MergeScenes"]["in"][0].setInput( __children["Dot"]["out"] )
+__children["MergeScenes"]["in"][1].setInput( __children["Camera"]["out"] )
+__children["MergeScenes"]["__uiPosition"].setValue( imath.V2f( 3.46233368, -2.04070401 ) )
+__children["Expression"]["__in"]["p0"].setInput( __children["BoundQuery"]["size"]["y"] )
+__children["Expression"]["__in"]["p1"].setInput( __children["Camera"]["user"]["zSize"] )
+__children["Expression"]["__uiPosition"].setValue( imath.V2f( -7.03683376, 6.12272787 ) )
+__children["Expression"]["__engine"].setValue( 'python' )
+__children["Expression"]["__expression"].setValue( 'zSzie = parent["__in"]["p1"]\n\nparent["__out"]["p0"] = parent["__in"]["p0"]/2\n\nparent["__out"]["p1"] = parent["__in"]["p0"]+(parent["__in"]["p0"]/zSzie)' )
+
+
+del __children
